@@ -1,0 +1,6 @@
+---
+- name: Clone dotfiles
+  command: git clone https://github.com/cjgk/dotfiles.git ~/.dotfiles chdir=~ creates=~/.dotfiles
+
+- name: Install dotfiles
+  command: bash setup.sh chdir=~/.dotfiles

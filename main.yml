@@ -1,0 +1,28 @@
+---
+- hosts: all
+  connection: local
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - include_vars: "{{ item }}"
+      with_fileglob:
+        - ../override.yml
+
+  roles:
+    - name: geerlingguy.homebrew
+      tags:
+        - apps
+    - name: geerlingguy.mas
+      when: mas_installed_app_ids
+      tags:
+        - apps
+
+  tasks:
+    - include: tasks/ansible-setup.yml
+    - include: tasks/tmuxp.yml
+    - include: tasks/bash.yml
+    - include: tasks/dotfiles.yml
+    - include: tasks/dock.yml
+    - include: tasks/osx.yml

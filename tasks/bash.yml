@@ -1,0 +1,10 @@
+---
+- name: Add brew bash as acceptable shell
+  command: bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+  become: true
+  tags: bash
+
+- name: Change shell to brew bash
+  command: chsh -s /usr/local/bin/bash  
+  tags: bash
+

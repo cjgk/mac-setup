@@ -1,0 +1,84 @@
+---
+- name: Expand save panel by default
+  command: defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+
+- name: Expand print panel by default
+  command: defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+
+- name: Disable game center
+  command: launchctl unload /System/Library/LaunchAgents/com.apple.gamed.plist 2> /dev/null
+
+- name: Enable full keyboard access for all controls
+  command: defaults write NSGlobalDomain AppleKeyboardUIMode -int 0
+
+- name: Speed up keyboard to somewhat insane levels
+  command: "{{ item }}"
+  with_items:
+  - defaults write -g InitialKeyRepeat -int 12
+  - defaults write -g KeyRepeat -int 1
+
+- name: Enable subpixel font rendering on non-Apple LCDs
+  command: defaults write NSGlobalDomain AppleFontSmoothing -int 2
+
+- name: Set location as default target for new Finder
+  command: defaults write com.apple.finder NewWindowTarget -string "PfLo"
+
+- name: Set that location to Home
+  command: defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
+
+- name: Show all filename extensions
+  command: defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+- name: Show status bar
+  command: defaults write com.apple.finder ShowStatusBar -bool true
+
+- name: Allow text selection in Quick Look
+  command: defaults write com.apple.finder QLEnableTextSelection -bool true
+
+- name: Display full POSIX path as Finder window title
+  command: defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+- name: Disable the warning when changing a file extension
+  command: defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+- name: Use column view in all Finder windows by default
+  command: defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv" 
+
+- name: Automatically hide and show the Dock
+  command: defaults write com.apple.dock autohide -bool true
+
+- name: Dock size
+  command: defaults write com.apple.dock tilesize -int 30 
+
+- name: Hot corners
+  command: "{{ item }}"
+  with_items:
+  - defaults write com.apple.dock wvous-br-corner -int 2
+  - defaults write com.apple.dock wvous-br-modifier -int 0
+  - defaults write com.apple.dock wvous-bl-corner -int 2
+  - defaults write com.apple.dock wvous-bl-modifier -int 0
+  - defaults write com.apple.dock wvous-tl-corner -int 10
+  - defaults write com.apple.dock wvous-tl-modifier -int 0
+
+- name: Safari Developer settings
+  command: "{{ item }}"
+  with_items:
+  - defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+  - defaults write com.apple.Safari IncludeDevelopMenu -bool true
+  - defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+  - defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+  - defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+- name: TextEdit developer settings
+  command: "{{ item }}"
+  with_items:
+  - defaults write com.apple.TextEdit RichText -int 0
+  - defaults write com.apple.TextEdit PlainTextEncoding -int 4
+  - defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
+
+- name: Restart
+  command: "killall {{ item }}"
+  with_items:
+  - Dock
+  - Finder
+  - SystemUIServer

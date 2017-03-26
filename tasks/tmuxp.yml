@@ -1,0 +1,4 @@
+---
+- name: Install tmuxp
+  shell: pip install tmuxp
+  tags: tmux
